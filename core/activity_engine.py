@@ -117,13 +117,12 @@ class ActivityEngine:
             return result
 
     def _execute_likes(self, profile_id: str) -> Dict[str, Any]:
-        """Execute liking activity"""
         try:
             logger.info("Starting likes activity", profile_id)
             print(f"[{time.strftime('%H:%M:%S')}] Liking posts...")
 
             from facebook.likes import LikeManager
-            like_manager = LikeManager()
+            like_manager = LikeManager(self.interaction)
 
             limit = self.daily_limits.get('likes', 3)
             result = like_manager.like_posts(profile_id, count=limit)
@@ -143,13 +142,12 @@ class ActivityEngine:
             return result
 
     def _execute_comments(self, profile_id: str) -> Dict[str, Any]:
-        """Execute commenting activity"""
         try:
             logger.info("Starting comments activity", profile_id)
             print(f"[{time.strftime('%H:%M:%S')}] Adding comments...")
 
             from facebook.comments import CommentManager
-            comment_manager = CommentManager()
+            comment_manager = CommentManager(self.interaction)
 
             limit = self.daily_limits.get('comments', 2)
             result = comment_manager.add_comments(profile_id, count=limit)
