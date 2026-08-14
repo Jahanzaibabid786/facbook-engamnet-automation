@@ -1,7 +1,10 @@
 # Facebook Web Automation - Python Dependencies
 
 # Browser automation
-pydoll>=0.1.0
+pydoll-python>=2.24.0
+
+# Process management
+psutil>=5.9.0
 
 # Database
 # (SQLite is built into Python, no extra dependency needed)
