@@ -4,7 +4,10 @@
     "headless": false,
     "arguments": [
       "--disable-blink-features=AutomationControlled",
-      "--disable-dev-shm-usage"
+      "--disable-dev-shm-usage",
+      "--no-first-run",
+      "--no-default-browser-check",
+      "--disable-sync"
     ],
     "facebook_url": "https://www.facebook.com",
     "login_timeout": 300,
