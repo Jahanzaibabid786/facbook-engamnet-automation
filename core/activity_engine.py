@@ -5,12 +5,13 @@ from utils.logger import logger
 from utils.database import Database
 
 class ActivityEngine:
-    def __init__(self, config_path: str = "config/activity_config.json"):
+    def __init__(self, interaction_manager=None, config_path: str = "config/activity_config.json"):
         import json
         with open(config_path, 'r') as f:
             self.config = json.load(f)
 
         self.db = Database()
+        self.interaction = interaction_manager
         self.activities = self.config.get('activities', {})
         self.daily_limits = self.config.get('daily_limits', {})
 

@@ -132,11 +132,22 @@ class SequentialExecutor:
 
             print(f"[{time.strftime('%H:%M:%S')}] Session validated successfully")
 
+            # Initialize PyDoll connection for real browser interaction
+            print(f"[{time.strftime('%H:%M:%S')}] Initializing browser automation...")
+            try:
+                import asyncio
+                loop = asyncio.new_event_loop()
+                asyncio.set_event_loop(loop)
+                loop.run_until_complete(self.interaction_manager.initialize(profile_id, port=9222))
+                logger.info("PyDoll connection initialized", profile_id)
+            except Exception as e:
+                logger.warning(f"PyDoll initialization failed, continuing with simulation: {str(e)}", profile_id)
+
             print(f"[{time.strftime('%H:%M:%S')}] Running daily activities...")
             logger.info(f"Starting daily activities for profile", profile_id)
 
             from core.activity_engine import ActivityEngine
-            activity_engine = ActivityEngine()
+            activity_engine = ActivityEngine(self.interaction_manager)
 
             activity_results = activity_engine.execute_daily_activities(profile_id, session_id)
 
