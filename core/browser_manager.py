@@ -178,16 +178,38 @@ class BrowserManager:
                     "import_bookmarks": False,
                     "import_history": False,
                     "import_search_engine": False,
-                    "suppress_first_run_bubble": True
+                    "suppress_first_run_bubble": True,
+                    "make_chrome_default_for_user": False
                 },
-                "first_run_tabs": [self.facebook_url]
+                "first_run_tabs": [self.facebook_url],
+                "profile": {
+                    "default_content_setting_values": {
+                        "notifications": 2
+                    }
+                }
             }
 
             prefs_file = default_dir / "Preferences"
             with open(prefs_file, 'w') as f:
                 json.dump(preferences, f, indent=2)
 
-            logger.info(f"Chrome preferences created at {prefs_file}")
+            local_state = {
+                "browser": {
+                    "check_default_browser": False
+                },
+                "profile": {
+                    "info_cache": {}
+                }
+            }
+
+            local_state_file = profile_dir / "Local State"
+            with open(local_state_file, 'w') as f:
+                json.dump(local_state, f, indent=2)
+
+            first_run = profile_dir / "First Run"
+            first_run.touch()
+
+            logger.info(f"Chrome preferences and state files created")
 
         except Exception as e:
             logger.warning(f"Failed to setup Chrome preferences: {str(e)}")

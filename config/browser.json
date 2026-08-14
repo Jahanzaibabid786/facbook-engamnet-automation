@@ -2,12 +2,7 @@
   "browser": {
     "type": "chrome",
     "headless": false,
-    "arguments": [
-      "--disable-dev-shm-usage",
-      "--no-first-run",
-      "--no-default-browser-check",
-      "--disable-sync"
-    ],
+    "arguments": [],
     "facebook_url": "https://www.facebook.com",
     "login_timeout": 300,
     "validation": {
