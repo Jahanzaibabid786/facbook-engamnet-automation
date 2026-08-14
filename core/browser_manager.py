@@ -164,6 +164,14 @@ class BrowserManager:
             default_dir = profile_dir / "Default"
             default_dir.mkdir(parents=True, exist_ok=True)
 
+            prefs_file = default_dir / "Preferences"
+
+            # Only create preferences if they don't exist (first run)
+            # Don't overwrite existing preferences as they contain session cookies
+            if prefs_file.exists():
+                logger.info(f"Chrome preferences already exist, preserving session data")
+                return
+
             preferences = {
                 "browser": {
                     "show_home_button": True,
@@ -189,25 +197,28 @@ class BrowserManager:
                 }
             }
 
-            prefs_file = default_dir / "Preferences"
             with open(prefs_file, 'w') as f:
                 json.dump(preferences, f, indent=2)
 
-            local_state = {
-                "browser": {
-                    "check_default_browser": False
-                },
-                "profile": {
-                    "info_cache": {}
-                }
-            }
-
             local_state_file = profile_dir / "Local State"
-            with open(local_state_file, 'w') as f:
-                json.dump(local_state, f, indent=2)
+
+            # Only create Local State if it doesn't exist
+            if not local_state_file.exists():
+                local_state = {
+                    "browser": {
+                        "check_default_browser": False
+                    },
+                    "profile": {
+                        "info_cache": {}
+                    }
+                }
+
+                with open(local_state_file, 'w') as f:
+                    json.dump(local_state, f, indent=2)
 
             first_run = profile_dir / "First Run"
-            first_run.touch()
+            if not first_run.exists():
+                first_run.touch()
 
             logger.info(f"Chrome preferences and state files created")
 
