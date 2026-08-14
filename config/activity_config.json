@@ -1,0 +1,25 @@
+{
+  "activities": {
+    "feed_scrolling": true,
+    "reels": true,
+    "likes": true,
+    "comments": true,
+    "sharing": true,
+    "stories": true
+  },
+  "daily_limits": {
+    "reels": 10,
+    "likes": 3,
+    "comments": 2,
+    "shares": 2,
+    "stories": 5
+  },
+  "timing": {
+    "scroll_pause_min": 2,
+    "scroll_pause_max": 5,
+    "reel_watch_min": 5,
+    "reel_watch_max": 15,
+    "interaction_delay_min": 1,
+    "interaction_delay_max": 3
+  }
+}

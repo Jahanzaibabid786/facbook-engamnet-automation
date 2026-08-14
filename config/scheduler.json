@@ -1,0 +1,14 @@
+{
+  "scheduler": {
+    "session_interval_min": 300,
+    "session_interval_max": 600,
+    "max_sessions_per_day": 5,
+    "randomize_activity_order": true
+  },
+  "execution": {
+    "mode": "sequential",
+    "max_parallel_instances": 3,
+    "retry_on_failure": true,
+    "max_retries": 2
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "app": {
+    "name": "Facebook Automation System",
+    "version": "0.1.0",
+    "debug": false
+  },
+  "profiles": {
+    "base_path": "profiles/profile_data",
+    "metadata_path": "profiles/metadata"
+  },
+  "database": {
+    "path": "database/app.db"
+  },
+  "logging": {
+    "global_log": "logs/application.log",
+    "profile_log_dir": "logs",
+    "level": "INFO"
+  },
+  "browser": {
+    "default_timeout": 30,
+    "page_load_timeout": 60,
+    "cleanup_on_close": true
+  }
+}

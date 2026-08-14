@@ -1,0 +1,17 @@
+{
+  "browser": {
+    "type": "chrome",
+    "headless": false,
+    "arguments": [
+      "--disable-blink-features=AutomationControlled",
+      "--disable-dev-shm-usage",
+      "--no-sandbox"
+    ],
+    "facebook_url": "https://www.facebook.com",
+    "login_timeout": 300,
+    "validation": {
+      "retry_attempts": 3,
+      "retry_delay": 5
+    }
+  }
+}
