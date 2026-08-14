@@ -4,25 +4,19 @@ from typing import Dict, Any
 from utils.logger import logger
 
 class ReelsWatcher:
-    def __init__(self):
+    def __init__(self, interaction_manager=None):
+        self.interaction = interaction_manager
         from facebook.navigation import FacebookNavigation
-        self.navigation = FacebookNavigation()
+        self.navigation = FacebookNavigation(interaction_manager)
 
     def watch_reels(self, profile_id: str, count: int = 10) -> Dict[str, Any]:
-        """Watch Facebook Reels"""
         start_time = time.time()
 
         try:
             logger.info(f"Starting to watch {count} reels", profile_id)
 
             if not self.navigation.navigate_to_reels(profile_id):
-                return {
-                    'activity_type': 'reels',
-                    'status': 'FAILED',
-                    'reason': 'Failed to navigate to Reels',
-                    'timestamp': time.strftime('%Y-%m-%d %H:%M:%S'),
-                    'duration': int(time.time() - start_time)
-                }
+                return self._failed_result(start_time, 'Failed to navigate to Reels')
 
             self.navigation.wait_for_page_load(profile_id)
 
@@ -36,13 +30,12 @@ class ReelsWatcher:
 
                 logger.info(f"Watched reel {watched}/{count}", profile_id)
 
-                # Move to next reel (scroll or swipe)
+                # Scroll to next reel with PyDoll
                 if i < count - 1:
-                    self.navigation.scroll_page(profile_id)
+                    self.navigation.scroll_page(profile_id, amount=1)
                     time.sleep(random.uniform(1, 2))
 
             duration_actual = int(time.time() - start_time)
-
             logger.info(f"Reels watching completed: {watched} reels in {duration_actual}s", profile_id)
 
             return {
@@ -55,13 +48,13 @@ class ReelsWatcher:
             }
 
         except Exception as e:
-            duration_actual = int(time.time() - start_time)
-            logger.error(f"Reels watching failed: {str(e)}", profile_id)
+            return self._failed_result(start_time, str(e))
 
-            return {
-                'activity_type': 'reels',
-                'status': 'FAILED',
-                'reason': str(e),
-                'timestamp': time.strftime('%Y-%m-%d %H:%M:%S'),
-                'duration': duration_actual
-            }
+    def _failed_result(self, start_time, reason):
+        return {
+            'activity_type': 'reels',
+            'status': 'FAILED',
+            'reason': reason,
+            'timestamp': time.strftime('%Y-%m-%d %H:%M:%S'),
+            'duration': int(time.time() - start_time)
+        }
