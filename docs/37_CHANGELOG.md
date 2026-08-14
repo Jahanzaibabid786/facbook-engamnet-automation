@@ -36,6 +36,64 @@ Semantic-ish versioning with tags on every meaningful milestone:
 
 ## History
 
+### [0.3.0] - 2026-08-14
+
+**Phase 3: Daily Activity Engine** ✅
+
+#### Added
+- **Activity Engine** (`core/activity_engine.py`)
+  - Configurable daily activity execution system
+  - Independent activity modules: Feed, Reels, Likes, Comments, Sharing, Stories
+  - Activity result tracking with SUCCESS/FAILED/SKIPPED states
+  - Per-activity logging to database
+  - Daily limits configuration per activity type
+  - Human-like randomization (timing, pauses, counts)
+- **Facebook Activity Modules**
+  - `facebook/navigation.py` - Facebook navigation helpers (home, reels, stories)
+  - `facebook/feed.py` - Feed browsing with scroll and pause simulation
+  - `facebook/reels.py` - Reels watching with configurable count
+  - `facebook/likes.py` - Post liking with daily limits
+  - `facebook/comments.py` - Comment posting with templates
+  - `facebook/sharing.py` - Content sharing
+  - `facebook/stories.py` - Stories viewing
+- **Activity Configuration**
+  - Toggles for each activity type (enable/disable)
+  - Daily limits per activity (reels: 10, likes: 3, comments: 2, shares: 2)
+  - Configurable via `config/activity_config.json`
+- **Result Tracking**
+  - Structured activity results with timestamps and durations
+  - Database logging for all activities
+  - Per-profile activity history
+  - Execution summaries with success/failed/skipped counts
+
+#### Enhanced
+- `core/sequential_executor.py`: Integrated ActivityEngine for daily activities
+- Activity execution now replaces Phase 2 placeholder
+- Live progress display shows activity completion status
+
+#### Architecture
+- **No browser-launching code in activity engine** - maintains separation
+- Activity modules are independent, configurable tasks
+- Each activity returns structured result with status tracking
+- Clean separation maintained: ActivityEngine ≠ Browser ≠ Facebook modules
+
+#### Definition of Done
+- ✅ Profile completes daily session with all configured activities
+- ✅ Every activity writes tracked result to profile log and database
+- ✅ Activities are independent, configurable tasks
+- ✅ Result tracking with SUCCESS/FAILED/SKIPPED/TIMEOUT states
+- ✅ Human-like randomization throughout activities
+
+#### GitHub
+- Repository: https://github.com/Jahanzaibabid786/facbook-engamnet-automation
+- Previous: 644bfae (Phase 2), ecdd94a (Chrome fixes)
+- Current: [pending commit]
+
+#### Next
+Phase 4: Device Manager (Android/Windows device configs, user-agent, viewport)
+
+---
+
 ### [0.2.0] - 2026-08-14
 
 **Phase 2: Multi-Profile + Sequential Execution** ✅

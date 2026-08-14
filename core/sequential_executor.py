@@ -130,12 +130,19 @@ class SequentialExecutor:
 
             print(f"[{time.strftime('%H:%M:%S')}] Session validated successfully")
 
-            print(f"[{time.strftime('%H:%M:%S')}] Running activities...")
-            logger.info(f"Starting activities for profile", profile_id)
+            print(f"[{time.strftime('%H:%M:%S')}] Running daily activities...")
+            logger.info(f"Starting daily activities for profile", profile_id)
 
-            time.sleep(5)
+            from core.activity_engine import ActivityEngine
+            activity_engine = ActivityEngine()
 
-            print(f"[{time.strftime('%H:%M:%S')}] Activities completed (Phase 3 placeholder)")
+            activity_results = activity_engine.execute_daily_activities(profile_id, session_id)
+
+            self.db.update_session(session_id, {
+                'activities_completed': activity_results['successful']
+            })
+
+            print(f"[{time.strftime('%H:%M:%S')}] Daily activities completed: {activity_results['successful']} successful, {activity_results['failed']} failed")
 
             print(f"[{time.strftime('%H:%M:%S')}] Closing browser...")
             self.browser_manager.close_browser(profile_id)
