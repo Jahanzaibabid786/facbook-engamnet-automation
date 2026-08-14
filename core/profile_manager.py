@@ -150,7 +150,7 @@ class ProfileManager:
             logger.error(f"Failed to delete profile: {str(e)}", profile_id)
             return False
 
-    def update_last_used(self, profile_id: str):
+    def update_profile_last_used(self, profile_id: str):
         try:
             updates = {
                 'last_used': datetime.now().isoformat(),
