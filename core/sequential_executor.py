@@ -3,6 +3,7 @@ from typing import List, Dict, Any, Optional
 from core.browser_manager import BrowserManager
 from core.profile_manager import ProfileManager
 from core.session_manager import SessionManager
+from interaction.interaction_manager import InteractionManager
 from utils.logger import logger
 from utils.database import Database
 
@@ -11,6 +12,7 @@ class SequentialExecutor:
         self.browser_manager = BrowserManager()
         self.profile_manager = ProfileManager()
         self.session_manager = SessionManager()
+        self.interaction_manager = InteractionManager()
         self.db = Database()
 
     def execute_profiles(self, profile_ids: List[str], activity_config: Optional[Dict] = None) -> Dict[str, Any]:

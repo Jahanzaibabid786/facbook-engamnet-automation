@@ -33,10 +33,14 @@ class BrowserManager:
             if not chrome_path:
                 raise Exception("Chrome executable not found")
 
+            # Remote debugging port for PyDoll connection
+            remote_debugging_port = 9222
+
             args = [
                 chrome_path,
                 f"--user-data-dir={profile_dir}",
                 f"--profile-directory=Default",
+                f"--remote-debugging-port={remote_debugging_port}",
                 self.facebook_url
             ]
 
@@ -71,13 +75,14 @@ class BrowserManager:
                 'pid': process.pid,
                 'profile_path': str(profile_dir),
                 'profile_id': profile_id,
-                'started_at': time.time()
+                'started_at': time.time(),
+                'remote_debugging_port': remote_debugging_port
             }
 
             if profile_id:
                 self.active_instances[profile_id] = instance
 
-            logger.info(f"Chrome started successfully (PID: {process.pid})", profile_id)
+            logger.info(f"Chrome started successfully (PID: {process.pid}, Debug Port: {remote_debugging_port})", profile_id)
             return instance
 
         except Exception as e:
