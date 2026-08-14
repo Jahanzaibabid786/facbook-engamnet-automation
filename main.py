@@ -7,6 +7,7 @@ from core.session_manager import SessionManager
 from core.sequential_executor import SequentialExecutor
 from facebook.login import FacebookLogin
 from utils.logger import logger
+from utils.profile_cleaner import ProfileCleaner
 
 class FacebookAutomation:
     def __init__(self):
@@ -29,7 +30,8 @@ class FacebookAutomation:
             print("6. Device Settings")
             print("7. Browser Settings")
             print("8. Logs")
-            print("9. Exit")
+            print("9. Clean All Profiles")
+            print("0. Exit")
             print("\nSelect option: ", end='')
 
             choice = input().strip()
@@ -55,6 +57,8 @@ class FacebookAutomation:
                 print("\n[Phase 1 Feature] Logs Viewer - Coming soon")
                 input("\nPress Enter to continue...")
             elif choice == '9':
+                self.clean_all_profiles()
+            elif choice == '0':
                 print("\nExiting...")
                 sys.exit(0)
             else:
@@ -368,6 +372,42 @@ class FacebookAutomation:
         print("\nDetails:")
         for result in results['profile_results']:
             print(f"  {result['profile_id']}: {result['status']} - {result.get('reason', 'N/A')}")
+
+        input("\nPress Enter to continue...")
+
+    def clean_all_profiles(self):
+        print("\n" + "="*60)
+        print(" Clean All Profiles")
+        print("="*60)
+        print("\n⚠️  WARNING: This will permanently delete ALL profiles!")
+        print("   - All profile data and Chrome profiles")
+        print("   - All profile metadata")
+        print("   - All activity and session history")
+        print("\nThis action CANNOT be undone.")
+        print("\nType 'DELETE' to confirm: ", end='')
+
+        confirmation = input().strip()
+
+        if confirmation != 'DELETE':
+            print("\nCancelled. No profiles were deleted.")
+            input("\nPress Enter to continue...")
+            return
+
+        print("\nCleaning all profiles...")
+
+        try:
+            cleaner = ProfileCleaner()
+            success = cleaner.clean_all_profiles()
+
+            if success:
+                print("\n✅ All profiles cleaned successfully!")
+                logger.info("All profiles cleaned by user")
+            else:
+                print("\n❌ Failed to clean profiles. Check logs for details.")
+
+        except Exception as e:
+            print(f"\n❌ Error: {str(e)}")
+            logger.error(f"Failed to clean profiles: {str(e)}")
 
         input("\nPress Enter to continue...")
 
