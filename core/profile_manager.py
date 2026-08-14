@@ -25,6 +25,10 @@ class ProfileManager:
         device_id: Optional[str] = None
     ) -> Dict[str, Any]:
         try:
+            # Ensure directories exist
+            self.base_path.mkdir(parents=True, exist_ok=True)
+            self.metadata_path.mkdir(parents=True, exist_ok=True)
+
             profile_id = self._generate_profile_id()
             profile_dir = self.base_path / profile_id
             chrome_data_dir = profile_dir / "chrome_data"
