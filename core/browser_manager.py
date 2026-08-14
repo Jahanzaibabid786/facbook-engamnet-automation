@@ -27,6 +27,8 @@ class BrowserManager:
             profile_dir = Path(profile_path).resolve()
             profile_dir.mkdir(parents=True, exist_ok=True)
 
+            self._setup_chrome_preferences(profile_dir)
+
             chrome_path = self._find_chrome_executable()
             if not chrome_path:
                 raise Exception("Chrome executable not found")
@@ -156,6 +158,39 @@ class BrowserManager:
                 return str(chrome_path)
 
         return None
+
+    def _setup_chrome_preferences(self, profile_dir: Path):
+        try:
+            default_dir = profile_dir / "Default"
+            default_dir.mkdir(parents=True, exist_ok=True)
+
+            preferences = {
+                "browser": {
+                    "show_home_button": True,
+                    "check_default_browser": False
+                },
+                "sync_promo": {
+                    "show_on_first_run_allowed": False
+                },
+                "distribution": {
+                    "skip_first_run_ui": True,
+                    "show_welcome_page": False,
+                    "import_bookmarks": False,
+                    "import_history": False,
+                    "import_search_engine": False,
+                    "suppress_first_run_bubble": True
+                },
+                "first_run_tabs": [self.facebook_url]
+            }
+
+            prefs_file = default_dir / "Preferences"
+            with open(prefs_file, 'w') as f:
+                json.dump(preferences, f, indent=2)
+
+            logger.info(f"Chrome preferences created at {prefs_file}")
+
+        except Exception as e:
+            logger.warning(f"Failed to setup Chrome preferences: {str(e)}")
 
     def get_instance_info(self, profile_id: str) -> Optional[Dict[str, Any]]:
         return self.active_instances.get(profile_id)
