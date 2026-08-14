@@ -3,7 +3,6 @@
     "type": "chrome",
     "headless": false,
     "arguments": [
-      "--disable-blink-features=AutomationControlled",
       "--disable-dev-shm-usage",
       "--no-first-run",
       "--no-default-browser-check",
